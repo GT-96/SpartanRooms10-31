@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpartanRooms10-31-19", "SpartanRooms10-31-19\SpartanRooms10-31-19.csproj", "{290FEC3F-612C-4A0C-A905-ECDBDEAC3EBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpartanRoomsData", "SpartanRoomsData\SpartanRoomsData.csproj", "{8791D00E-9A85-4384-90A0-95DFAA9FD388}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{290FEC3F-612C-4A0C-A905-ECDBDEAC3EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{290FEC3F-612C-4A0C-A905-ECDBDEAC3EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{290FEC3F-612C-4A0C-A905-ECDBDEAC3EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{290FEC3F-612C-4A0C-A905-ECDBDEAC3EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8791D00E-9A85-4384-90A0-95DFAA9FD388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8791D00E-9A85-4384-90A0-95DFAA9FD388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8791D00E-9A85-4384-90A0-95DFAA9FD388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8791D00E-9A85-4384-90A0-95DFAA9FD388}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8C9B694-DCF8-45D4-A05C-FC56DF1AF69F}
+	EndGlobalSection
+EndGlobal
