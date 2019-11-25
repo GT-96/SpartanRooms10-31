@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpartanRoomsData;
 
 namespace SpartanRoomsData.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191124082423_exampleMigration")]
+    partial class exampleMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,29 +34,6 @@ namespace SpartanRoomsData.Migrations
                     b.HasKey("AdminID");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("SpartanRoomsData.Models.BookingContainer", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RoomID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("isFull")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("RoomID");
-
-                    b.ToTable("BookingContainers");
                 });
 
             modelBuilder.Entity("SpartanRoomsData.Models.CallenderDate", b =>
@@ -122,9 +101,6 @@ namespace SpartanRoomsData.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookingContainerID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
@@ -138,8 +114,6 @@ namespace SpartanRoomsData.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("BookingContainerID");
 
                     b.HasIndex("RoomID");
 
@@ -201,7 +175,12 @@ namespace SpartanRoomsData.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RoomID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("RoomID");
 
                     b.ToTable("Students");
                 });
@@ -229,13 +208,6 @@ namespace SpartanRoomsData.Migrations
                     b.ToTable("UnlockInstructions");
                 });
 
-            modelBuilder.Entity("SpartanRoomsData.Models.BookingContainer", b =>
-                {
-                    b.HasOne("SpartanRoomsData.Models.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomID");
-                });
-
             modelBuilder.Entity("SpartanRoomsData.Models.CallenderDate", b =>
                 {
                     b.HasOne("SpartanRoomsData.Models.Schedule", null)
@@ -252,13 +224,8 @@ namespace SpartanRoomsData.Migrations
 
             modelBuilder.Entity("SpartanRoomsData.Models.Reservation", b =>
                 {
-                    b.HasOne("SpartanRoomsData.Models.BookingContainer", "BookingContainer")
-                        .WithMany("Reservations")
-                        .HasForeignKey("BookingContainerID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SpartanRoomsData.Models.Room", "Room")
-                        .WithMany("HistoryOfReservations")
+                        .WithMany("Reservations")
                         .HasForeignKey("RoomID");
 
                     b.HasOne("SpartanRoomsData.Models.Student", "Student")
@@ -275,6 +242,13 @@ namespace SpartanRoomsData.Migrations
                     b.HasOne("SpartanRoomsData.Models.Department", "department")
                         .WithMany("Rooms")
                         .HasForeignKey("departmentID");
+                });
+
+            modelBuilder.Entity("SpartanRoomsData.Models.Student", b =>
+                {
+                    b.HasOne("SpartanRoomsData.Models.Room", null)
+                        .WithMany("Students")
+                        .HasForeignKey("RoomID");
                 });
 
             modelBuilder.Entity("SpartanRoomsData.Models.UnlockInstruction", b =>

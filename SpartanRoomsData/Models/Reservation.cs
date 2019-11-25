@@ -11,5 +11,6 @@ namespace SpartanRoomsData.Models
         public virtual DateTime DateTime { get; set; }
         public virtual Room Room { get; set; }
         public virtual Student Student { get; set; }
+        public virtual BookingContainer BookingContainer { get; set; }
     }
 }

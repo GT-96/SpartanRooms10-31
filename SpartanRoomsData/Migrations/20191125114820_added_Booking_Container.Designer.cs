@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpartanRoomsData;
 
 namespace SpartanRoomsData.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191125114820_added_Booking_Container")]
+    partial class added_Booking_Container
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,10 +254,9 @@ namespace SpartanRoomsData.Migrations
 
             modelBuilder.Entity("SpartanRoomsData.Models.Reservation", b =>
                 {
-                    b.HasOne("SpartanRoomsData.Models.BookingContainer", "BookingContainer")
+                    b.HasOne("SpartanRoomsData.Models.BookingContainer", null)
                         .WithMany("Reservations")
-                        .HasForeignKey("BookingContainerID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BookingContainerID");
 
                     b.HasOne("SpartanRoomsData.Models.Room", "Room")
                         .WithMany("HistoryOfReservations")

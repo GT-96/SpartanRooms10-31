@@ -22,9 +22,9 @@ namespace SpartanRoomsData.Models
         public virtual RoomType? Type { get; set; }
 
         public virtual ICollection<UnlockInstruction> UnlockInstructions { get; set; }
-        public virtual ICollection<Student>? Students { get; set; }
+        //public virtual ICollection<Student>? HistoryOfStudents { get; set; }
 
-        public virtual ICollection<Reservation>? Reservations { get; set; }
+        public virtual ICollection<Reservation>? HistoryOfReservations { get; set; }
 
 
         //public ICollection<Schedule> Schedules { get; set; }

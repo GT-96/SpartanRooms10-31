@@ -26,8 +26,24 @@ namespace SpartanRoomsData
 
         //public DbSet<RoomStudent> RoomStudents { get; set; }
 
+        public DbSet<BookingContainer> BookingContainers { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Reservation>()
+                .HasOne<BookingContainer>(b => b.BookingContainer)
+                .WithMany(r => r.Reservations)
+                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<BookingContainer>()
+            //    .HasMany<Reservation>(m => m.Reservations)
+            //    .WithOne(b => b.BookingContainer)
+            //    .HasForeignKey(k => k.BookingContainer)
+            //    .OnDelete(DeleteBehavior.Cascade);
+            ////.HasOptional(o => o.Room)
+            ////.WithMany(m => m.Reservations)
+            ////.HasForeignKey(k => k.BookingContainer)
+            ////.WillCascadeOnDelete(true);
+        }
 
     }
 }
