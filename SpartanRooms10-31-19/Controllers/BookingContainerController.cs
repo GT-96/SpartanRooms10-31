@@ -24,7 +24,58 @@ namespace SpartanRooms10_31_19.Controllers
         // GET: BookingContainer
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BookingContainers.ToListAsync());
+            List<BookingContainer> returnToView = new List<BookingContainer>();
+            var bookingContainers = await _context.BookingContainers.ToListAsync();
+            foreach(var booking in bookingContainers)
+            {
+                var result = (from a in _context.BookingContainers
+                              where a.ID == booking.ID
+                              select new BookingContainer { ID = a.ID, RoomID = a.RoomID, Reservations=a.Reservations, Room=a.Room, DateTime=a.DateTime }).ToList();
+
+                if (result[0].Reservations.Count-1>= result[0].Room.Capacity)
+                {
+                    result[0].isFull = true;
+                }
+
+                returnToView.Add(result[0]);
+
+
+                //Turns out I dont need to do this. 
+                //" select new BookingContainer { ID = a.ID, RoomID = a.RoomID, Reservations=a.Reservations, Room=a.Room } finds all the related objects for me 0.0
+                ////ADD ROOMS TO BOOKIINGCONTAINER
+                ////add all returned booking containers into returnToViewList
+                ////Should only be one though. booking.ID is unique primary key
+                //foreach(var r in result)
+                //{
+                //    //finds all the Room objects with the same ID as r ( should only be 1 room obj)
+                //    var rooms= (from a in _context.Rooms
+                //                where a.ID == r.RoomID
+                //                select new Room { ID = a.ID, RoomName =a.RoomName, Type=a.Type }).ToList();
+
+
+                //    //var reservations = (from a in _context.Reservations
+                //    //                    where a.)
+
+                //    //should only run once since room.ID is unique
+                //    foreach(var s in rooms)
+                //    {
+                //        //sets booking objects rooms to the related entries in database
+                //        r.Room = s;
+                //    }
+
+                //    returnToView.Add(r);
+                //}
+                ////END OF ADD ROOMS TO BOOKING CONTAINER
+
+
+
+
+                //var roomID = _context.BookingContainers.Include(i => i.RoomID).Where(r => r.ID == booking.ID);
+                //booking.Room.ID= _context.BookingContainers.Find()
+            }
+            returnToView.Sort((x, y) => DateTime.Compare(x.DateTime, y.DateTime));
+            var dummy = 1;
+            return View(returnToView);
         }
 
         // GET: BookingContainer/Details/5
@@ -123,39 +174,80 @@ namespace SpartanRooms10_31_19.Controllers
         public IActionResult Create()
         {
             CreateBookingViewModel viewModel = new CreateBookingViewModel();
-
             viewModel.Rooms = _context.Rooms.ToList();
+
+            viewModel.RoomIDs = viewModel.Rooms.ConvertAll(a=>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.RoomName.ToString(),
+                    Value = a.ID.ToString(),
+                    Selected = false
+                };
+            }
+                );
+
+
+            //foreach(var room in viewModel.Rooms)
+            //{
+            //    viewModel.RoomIDs.Add(room.ID.ToSele)
+
+            //}
 
             return View(viewModel);
         }
+
 
         // POST: BookingContainer/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateBookingViewModel viewModel)
+        public async Task<IActionResult> Create(CreateBookingViewModel viewModel, List<CreateBookingViewModel> viewModelList)
         {
             //[Bind("ID,DateTime,isFull")]
         BookingContainer bookingContainer= new BookingContainer();
+            int bookingContainersSize = viewModel.PostedIDs.Count;
+            BookingContainer[] bookingContainers = new BookingContainer[bookingContainersSize]; ;
 
             if (ModelState.IsValid)
             {
-                bookingContainer = viewModel.BookingContainer;
-                Reservation firstReservation = new Reservation();
-                firstReservation.ReservationString = "Initialized";
-                bookingContainer.Reservations = new List<Reservation>();
-                bookingContainer.Reservations.Add(firstReservation);
+                int i = 0;
+                foreach(var entry in viewModel.PostedIDs)
+                {
+                    bookingContainers[i] = new BookingContainer();
+                    bookingContainers[i].DateTime = viewModel.BookingContainer.DateTime;
+                    var ID = Convert.ToInt32(viewModel.PostedIDs[i]);
+                    bookingContainers[i].Room = _context.Rooms.Find(ID);
 
-                _context.Add(bookingContainer);
-                await _context.SaveChangesAsync();
+
+                    Reservation initReservation = new Reservation();
+                    initReservation.ReservationString = "Initialized";
+                    bookingContainers[i].Reservations = new List<Reservation>();
+                    bookingContainers[i].Reservations.Add(initReservation);
+
+                    _context.Add(bookingContainers[i]);
+                    await _context.SaveChangesAsync();
+                    i++;
+                }
+                //bookingContainer = viewModel.BookingContainer;
+                //Reservation firstReservation = new Reservation();
+                //firstReservation.ReservationString = "Initialized";
+                //bookingContainer.Reservations = new List<Reservation>();
+                //bookingContainer.Reservations.Add(firstReservation);
+
+                //_context.Add(bookingContainer);
+                //await _context.SaveChangesAsync();
+
+
                 return RedirectToAction(nameof(Index));
             }
             return View(bookingContainer);
         }
 
-        // GET: BookingContainer/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+
+// GET: BookingContainer/Edit/5
+public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {

@@ -15,6 +15,7 @@ namespace SpartanRoomsData.Models
         public ICollection<Reservation> Reservations { get; set; }
         public bool isFull { get; set; }
 
+        public int RoomID { get; set; }
 
     }
 }

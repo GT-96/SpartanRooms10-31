@@ -1,4 +1,5 @@
-﻿using SpartanRoomsData.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SpartanRoomsData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace SpartanRooms10_31_19.Models
         public Room Room { get; set; }
 
         public List<Room> Rooms { get; set; }
+
+        public List <SelectListItem> RoomIDs { get; set; }
+
+        public List<string> PostedIDs { get; set; }
 
     }
 }

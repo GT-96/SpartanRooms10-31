@@ -2,18 +2,24 @@
 
 @{
     ViewData["Title"] = "Create";
+    //List<SelectListItem> RoomIds = new List<SelectListItem>();
+    //foreach(var room in Model.Rooms)
+    //{
+    //    RoomIds.Add(room.ID);
+    //}
+
 }
 
 @*<link rel="stylesheet" type="text/css" href="jquery.datetimepicker.css" />
-<input type="text" id="demo" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="jquery.datetimepicker.js"></script>
+    <input type="text" id="demo" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="jquery.datetimepicker.js"></script>
 
-<script>
-    $('#demo').datetimepicker({
-        inline: true,
-    });
-</script>*@
+    <script>
+        $('#demo').datetimepicker({
+            inline: true,
+        });
+    </script>*@
 
 
 <h1>Create</h1>
@@ -29,13 +35,13 @@
     </div>*@
 
 @*<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker2').datetimepicker({
-            language: 'en',
-            pick12HourFormat: true
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                language: 'en',
+                pick12HourFormat: true
+            });
         });
-    });
-</script>*@
+    </script>*@
 
 <h4>BookingContainer</h4>
 <hr />
@@ -55,25 +61,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <select asp-for="Room.ID" class="form-control">
-                        @foreach (var room in Model.Rooms)
-                        {
-                            <option value="@room.ID">@room.RoomName, @room.Type, @room.ID</option>
-                        }
+                    <select asp-for="PostedIDs" asp-items="Model.RoomIDs" class="form-control">
                     </select>
-
-                    @*<label asp-for="DateTime" class="control-label"></label>
-                        <input asp-for="DateTime" class="form-control" />
-                        <span asp-validation-for="DateTime" class="text-danger"></span>*@
                 </div>
-                @*<div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="isFull" /> @Html.DisplayNameFor(model => model.isFull)
-                        </label>
-                    </div>*@
+
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
+            </div>
         </form>
     </div>
 </div>
@@ -85,3 +80,22 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+@*@{int i = 0; }*@
+
+
+@*@foreach (var room in Model.Rooms)
+    {
+        <option value="@room.ID">@room.RoomName, @room.Type, @room.ID</option>
+        i++;
+    }*@
+
+@*<label asp-for="DateTime" class="control-label"></label>
+    <input asp-for="DateTime" class="form-control" />
+    <span asp-validation-for="DateTime" class="text-danger"></span>*@
+
+@*<div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="isFull" /> @Html.DisplayNameFor(model => model.isFull)
+        </label>
+    </div>*@
