@@ -28,6 +28,11 @@ namespace SpartanRoomsData
 
         public DbSet<BookingContainer> BookingContainers { get; set; }
 
+        public DbSet<StudentCredentials> StudentCredentials { get; set; }
+
+        public DbSet<AdminCredentials> AdminCredentials { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Reservation>()

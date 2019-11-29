@@ -1,9 +1,14 @@
-﻿@model IEnumerable<SpartanRoomsData.Models.BookingContainer>
+﻿@model SpartanRooms10_31_19.Models.DisplayRoomsViewModel;
 
 @{
     ViewData["Title"] = "Index";
 }
 
+@{ 
+    int headerID = 0;
+    int tdCheck = 0;
+    string thisIsHere = "This Is HERE";
+}
 <h1>Index</h1>
 
 <p>
@@ -11,22 +16,62 @@
 </p>
 <table class="table">
     <thead>
+
         <tr>
+            @foreach (var item in Model.timeArray)
+            {
+            <th id="@headerID">
+                @item.ToString("hh:mm tt")
+            </th>
+                headerID++;
+            }
             <th>
-                @Html.DisplayNameFor(model => model.DateTime)
+                @Html.DisplayNameFor(model => model.BookingContainer.DateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room.RoomName)
+                @Html.DisplayNameFor(model => model.BookingContainer.Room.RoomName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.isFull)
+                @Html.DisplayNameFor(model => model.BookingContainer.isFull)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.BookingContainerList) {
+        
         <tr>
+            @foreach (var hour in Model.timeArray)
+            {
+            <td>
+
+                @if (item.DateTime.Hour == hour.Hour)
+                {
+                    if (!item.isFull)
+                    {
+                        @:<div id=@item.ID class="bg-success" style="fill:green; font-size:500%">&#10003</div>
+                    }
+                    else
+                    {
+                        @:<div id=@item.ID class="bg-danger" style="fill:green; font-size:500%">&#10060</div>
+
+
+
+
+                    }
+                }
+                else
+                {
+                    @:<div id=@item.ID class="bg-secondary" style="fill:green; font-size:500%">&#9676</div>
+
+
+                }
+
+
+
+            </td>
+            }
+
             <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
             </td>
@@ -43,9 +88,13 @@
 
                 @if (!item.isFull)
                 {
-                <a asp-action="CreateReservation" asp-route-id="@item.ID">Create New Reservation</a>
+                    <a asp-action="CreateReservation" asp-route-id="@item.ID">Create New Reservation</a>
                 }
             </td>
+
+
+
+
         </tr>
 }
     </tbody>

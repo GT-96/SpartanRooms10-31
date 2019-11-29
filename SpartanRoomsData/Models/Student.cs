@@ -13,9 +13,9 @@ namespace SpartanRoomsData.Models
 
         public virtual ICollection<Reservation>? Reservations { get; set; }
 
-        public static implicit operator Student(StringValues v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator Student(StringValues v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

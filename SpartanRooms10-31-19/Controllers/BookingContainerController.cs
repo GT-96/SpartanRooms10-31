@@ -21,10 +21,17 @@ namespace SpartanRooms10_31_19.Controllers
             _context = context;
         }
 
+        public IActionResult CalView()
+        {
+            return View();
+        }
+
         // GET: BookingContainer
         public async Task<IActionResult> Index()
         {
-            List<BookingContainer> returnToView = new List<BookingContainer>();
+            DisplayRoomsViewModel returnToView = new DisplayRoomsViewModel();
+            returnToView.BookingContainerList = new List<BookingContainer>();
+            returnToView.initTimeArray();
             var bookingContainers = await _context.BookingContainers.ToListAsync();
             foreach(var booking in bookingContainers)
             {
@@ -37,7 +44,7 @@ namespace SpartanRooms10_31_19.Controllers
                     result[0].isFull = true;
                 }
 
-                returnToView.Add(result[0]);
+                returnToView.BookingContainerList.Add(result[0]);
 
 
                 //Turns out I dont need to do this. 
@@ -73,7 +80,7 @@ namespace SpartanRooms10_31_19.Controllers
                 //var roomID = _context.BookingContainers.Include(i => i.RoomID).Where(r => r.ID == booking.ID);
                 //booking.Room.ID= _context.BookingContainers.Find()
             }
-            returnToView.Sort((x, y) => DateTime.Compare(x.DateTime, y.DateTime));
+            returnToView.BookingContainerList.Sort((x, y) => DateTime.Compare(x.DateTime, y.DateTime));
             var dummy = 1;
             return View(returnToView);
         }
@@ -193,7 +200,7 @@ namespace SpartanRooms10_31_19.Controllers
             //    viewModel.RoomIDs.Add(room.ID.ToSele)
 
             //}
-
+            viewModel.RoomIDs.Sort((x, y) => string.Compare(x.Text, y.Text));
             return View(viewModel);
         }
 
