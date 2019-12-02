@@ -10,8 +10,9 @@
     Model.alreadyCompletedRender = new List<string>();
 
     string[] tdRender = new string[24];
-    //Dictionary
-
+    Dictionary<int, SpartanRoomsData.Models.BookingContainer> BookingIDandContainer = new Dictionary<int, SpartanRoomsData.Models.BookingContainer>();
+    Dictionary<int, string[]> tdRenderBookingID = new Dictionary<int, string[]>();
+    int dictionaryCounter = 0;
 }
 <h1>Index</h1>
 
@@ -48,6 +49,8 @@
 
         @foreach (var count in Model.countOfRooms)
         {
+            tdRenderBookingID.Clear();
+
             @for (int i = 0; i < tdRender.Length; i++)
             {
                 tdRender[i] = "null";
@@ -65,65 +68,106 @@
                         if (hour.Hour == Model.BookingContainerList[i].DateTime.Hour)
                         {
                             tdRender[hourTracker] = "FREE";
+                            BookingIDandContainer.Add(Model.BookingContainerList[i].ID, Model.BookingContainerList[i]);
                         }
                         hourTracker++;
                     }
+                    tdRenderBookingID.Add(Model.BookingContainerList[i].ID, tdRender);
                 }
 
             }
 
-            <tr>
+        <tr>
 
-                @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>*@
-                @{var room = Model.BookingContainerList.Where(i => i.RoomID == count.Key);
-                    var roomName = Model.Rooms.First(r => r.ID == count.Key);
-                    //var booking = room.Where(r=>)
-                }
-                <td>@Html.DisplayFor(m => roomName.RoomName)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="">Edit</a> |
-                    <a asp-action="Details" asp-route-id="">Details</a> |
-                    <a asp-action="Delete" asp-route-id="">Delete</a>
+            @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>*@
+            @{var room = Model.BookingContainerList.Where(i => i.RoomID == count.Key);
+                var roomName = Model.Rooms.First(r => r.ID == count.Key);
+                //var booking = room.Where(r=>)
+            }
+            <td>@Html.DisplayFor(m => roomName.RoomName)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="">Edit</a> |
+                <a asp-action="Details" asp-route-id="">Details</a> |
+                <a asp-action="Delete" asp-route-id="">Delete</a>
 
-                    @*@if (!room.isFull)
-                        {
-                            <a asp-action="CreateReservation" asp-route-id="">Create New Reservation</a>
-                        }*@
-                </td>
+                @*@if (!room.isFull)
+            {
+                <a asp-action="CreateReservation" asp-route-id="">Create New Reservation</a>
+            }*@
+            </td>
 
-                @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>*@
-                <td></td>
-                <td></td>
+            @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>*@
+            <td></td>
 
-                @for (int i = 0; i < tdRender.Length; i++)
+            @*@for (int i = 0; i < tdRender.Length; i++)
+        {
+            tdRender[i].ToLower();
+            if (tdRender[i].Contains("null".ToLower()))
+            {
+                tdRender[i] = "NOT AVAILABLE";
+            }
+        }*@
+            @{ int sCount = 0;
+                int tdRenderKeysCount = 0;
+            }
+            @foreach (var s in tdRender)
+            {
+                bool isFull = false;
+                if (sCount < tdRenderBookingID.Keys.Count)
                 {
-                    tdRender[i].ToLower();
-                    if (tdRender[i].Contains("null".ToLower()))
-                    {
-                        tdRender[i] = "NOT AVAILABLE";
-                    }
-                }
-                @foreach (var s in tdRender)
-                {
-                    if (s.Contains("FREE"))
-                    {
-                        <td class="bg-success" style="font-size:200%">
-                            <a asp-action="CreateReservation" asp-route-id=>Delete</a>
+                    var container = Model.BookingContainerList.First(f => f.ID == tdRenderBookingID.Keys.ElementAt(sCount));
+                    var tdID = container.ID;
+                    var tdRenderKeys = tdRenderBookingID.Keys;
+                    var tdRenderValues = tdRenderBookingID.Values;
 
-                        </td>
-                    }
-                    else
+                    var asdasf = Model.BookingContainerList.First(f => f.ID == tdRenderKeys.ElementAt(sCount));
+
+                    isFull = container.isFull;
+
+                    if (s.Contains("FREE") && isFull)
                     {
-                        <td class="bg-danger" style="font-size:200%">
+                        <td id="@tdID" class="bg-danger" style="font-size:200%">
                             &#10060
 
                         </td>
+                        sCount++;
+
                     }
+                    else if (s.Contains("FREE") && !isFull)
+                    {
+                        <td id="@tdID"class="bg-success" style="font-size:200%">
+                            <a asp-action="CreateReservation" asp-route-id="@tdID">Reserve!</a>
+
+                        </td>
+                        sCount++;
+                    }
+                    else
+                    {
+                        <td id="@tdID" class="bg-secondary" style="font-size:200%">
+
+                            &#9676
+                        </td>
+                        //sCount++;
+
+                    }
+                }
+                else
+                {
+                    <td class="bg-secondary" style="font-size:200%">
+
+                        &#9676
+                    </td>
+                    //sCount++;
 
                 }
-            </tr>
+
+            }
+            @{ tdRenderKeysCount++;
+            }
+        </tr>
 
 
+            //dictionaryCounter++;
         }
 
 
