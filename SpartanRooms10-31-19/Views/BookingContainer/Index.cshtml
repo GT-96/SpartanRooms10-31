@@ -4,10 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-@{ 
+@{
+    int roomFullTracker = 0;
     int headerID = 0;
-    int tdCheck = 0;
-    string thisIsHere = "This Is HERE";
+    Model.alreadyCompletedRender = new List<string>();
+
+    string[] tdRender = new string[24];
+    //Dictionary
+
 }
 <h1>Index</h1>
 
@@ -18,15 +22,15 @@
     <thead>
 
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingContainer.DateTime)
-            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.BookingContainer.DateTime)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.BookingContainer.Room.RoomName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingContainer.isFull)
-            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.BookingContainer.isFull)
+                </th>*@
             <th></th>
             <th></th>
             @foreach (var item in Model.timeArray)
@@ -38,119 +42,288 @@
             }
 
 
-
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.BookingContainerList) {
 
-
-
-        
-        <tr>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.RoomName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.isFull)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-
-                @if (!item.isFull)
-                {
-                    <a asp-action="CreateReservation" asp-route-id="@item.ID">Create New Reservation</a>
-                }
-            </td>
-            <td></td>
-
-
-
-            @foreach (var hour in Model.timeArray)
+        @foreach (var count in Model.countOfRooms)
+        {
+            @for (int i = 0; i < tdRender.Length; i++)
             {
-                <td>
+                tdRender[i] = "null";
+            }
 
-                    @if (item.DateTime.Hour == hour.Hour)
+            int countTracker = 0;
+            @for (int i = 0; i < Model.BookingContainerList.Count; i++)
+            {
+                if (Model.BookingContainerList[i].RoomID == count.Key)
+                {
+                    int hourTracker = 0;
+
+                    foreach (var hour in Model.timeArray)
                     {
-                        if (!item.isFull)
+                        if (hour.Hour == Model.BookingContainerList[i].DateTime.Hour)
                         {
-                            @:<div id=@item.ID class="bg-success" style="fill:green; font-size:500%">&#10003</div>
+                            tdRender[hourTracker] = "FREE";
                         }
-                        else
+                        hourTracker++;
+                    }
+                }
+
+            }
+
+            <tr>
+
+                @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>*@
+                @{var room = Model.BookingContainerList.Where(i => i.RoomID == count.Key);
+                    var roomName = Model.Rooms.First(r => r.ID == count.Key);
+                    //var booking = room.Where(r=>)
+                }
+                <td>@Html.DisplayFor(m => roomName.RoomName)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="">Edit</a> |
+                    <a asp-action="Details" asp-route-id="">Details</a> |
+                    <a asp-action="Delete" asp-route-id="">Delete</a>
+
+                    @*@if (!room.isFull)
                         {
-                            @:<div id=@item.ID class="bg-danger" style="fill:green; font-size:500%">&#10060</div>
+                            <a asp-action="CreateReservation" asp-route-id="">Create New Reservation</a>
+                        }*@
+                </td>
 
+                @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>*@
+                <td></td>
+                <td></td>
 
+                @for (int i = 0; i < tdRender.Length; i++)
+                {
+                    tdRender[i].ToLower();
+                    if (tdRender[i].Contains("null".ToLower()))
+                    {
+                        tdRender[i] = "NOT AVAILABLE";
+                    }
+                }
+                @foreach (var s in tdRender)
+                {
+                    if (s.Contains("FREE"))
+                    {
+                        <td class="bg-success" style="font-size:200%">
+                            <a asp-action="CreateReservation" asp-route-id=>Delete</a>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        }
+                        </td>
                     }
                     else
                     {
-                        @:<div id=@item.ID class="bg-secondary" style="fill:green; font-size:500%">&#9676</div>
+                        <td class="bg-danger" style="font-size:200%">
+                            &#10060
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        </td>
                     }
 
+                }
+            </tr>
 
 
-                </td>
-            }
+        }
 
 
+        @*@foreach (var count in Model.countOfRooms)
+            {
+                <tr>
 
+                    @{int index = 0;
+                    }
+                    <td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>
+                    <td>@Html.DisplayFor(m => Model.BookingContainerList[index].Room.RoomName)</td>
 
+                    <td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>
+                    <td></td>
+                    <td></td>
 
+                    @for (int i = 0; i < tdRender.Length; i++)
+                    {
+                        tdRender[i].ToLower();
+                        if (tdRender[i].Contains("null".ToLower()))
+                        {
+                            tdRender[i] = "NOT AVAILABLE";
+                        }
+                    }
+                    @foreach (var s in tdRender)
+                    {
+                        <td>
+                            @s
 
-        </tr>
-}
+                        </td>
+                    }
+                    @{index++;
+                    }
+                </tr>
+            }*@
+
     </tbody>
 </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@model SpartanRooms10_31_19.Models.DisplayRoomsViewModel;
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    @{
+        int headerID = 0;
+        int tdCheck = 0;
+        string thisIsHere = "This Is HERE";
+        int trTracker = 0;
+        Model.alreadyCompletedRender = new List<string>();
+    }
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookingContainer.DateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookingContainer.Room.RoomName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookingContainer.isFull)
+                </th>
+                <th></th>
+                <th></th>
+                @foreach (var item in Model.timeArray)
+                {
+                    <th id="@headerID">
+                        @item.ToString("hh:mm tt")
+                    </th>
+                    headerID++;
+                }
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.BookingContainerList)
+            {
+
+
+
+                @if (!Model.alreadyRenderedRooms.Contains(item.Room.RoomName))
+                {
+                    string add = item.Room.RoomName;
+                    Model.alreadyRenderedRooms[trTracker] = add;
+                    trTracker++;
+
+
+
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Room.RoomName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.isFull)
+                        </td>
+
+
+
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+
+                            @if (!item.isFull)
+                            {
+                                <a asp-action="CreateReservation" asp-route-id="@item.ID">Create New Reservation</a>
+                            }
+                        </td>
+
+                        <td></td>
+
+
+
+                        @foreach (var hour in Model.timeArray)
+                        {
+                            string? tempString = "init";
+                            string divString="init";
+                            string imageCode = "init";
+                            <td>
+
+                                    @foreach (var x in Model.BookingContainerList)
+                                    {
+                                        if (Model.alreadyRenderedRooms.Contains(x.Room.RoomName) && !Model.alreadyCompletedRender.Contains(x.Room.RoomName))
+                                        {
+
+                                            @if (x.DateTime.Hour == hour.Hour)
+                                            {
+                                                if (!x.isFull)
+                                                {
+                                                    divString = "id="+@x.ID+" class=bg-success style=font-size:500%>";
+                                                    imageCode = "&#10003";
+                                                }
+                                                if(x.isFull)
+                                                {
+                                                    divString = "id="+@x.ID+" class=bg-danger style=fill:green;font-size:500%>";
+                                                    imageCode = "&#10060";
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                divString = "id="+@x.ID+" class=bg-secondary style=fill:green;font-size:500%>";
+                                                    imageCode = "&#9676";
+
+                                            }
+                                            var asd = x.Room.RoomName;
+
+                                        }
+                                        tempString = x.Room.RoomName;
+
+                                    }
+
+                                    @{Model.alreadyCompletedRender.Add(tempString);
+                                        //tempString ="";
+                                    }
+                                <div @divString>@imageCode @tempString</div>
+                                @{ divString = ""; imageCode = "";}
+                            </td>
+                        }
+
+
+
+
+
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+*@

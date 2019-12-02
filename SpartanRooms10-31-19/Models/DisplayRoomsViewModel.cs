@@ -11,7 +11,11 @@ namespace SpartanRooms10_31_19.Models
         public BookingContainer BookingContainer { get; set; }
 
         public List<DateTime> timeArray = new List<DateTime>();
+         public List<Room> Rooms { get; set; }
+        public string[] alreadyRenderedRooms { get; set; }
+        public List<string> alreadyCompletedRender { get; set; }
 
+        public Dictionary<int, int> countOfRooms { get; set; }
         public void initTimeArray()
         {
             for (int i = 0; i < 24; i++)

@@ -31,8 +31,12 @@ namespace SpartanRooms10_31_19.Controllers
         {
             DisplayRoomsViewModel returnToView = new DisplayRoomsViewModel();
             returnToView.BookingContainerList = new List<BookingContainer>();
+            returnToView.countOfRooms = new Dictionary<int, int>();
+
+            returnToView.Rooms = new List<Room>();
             returnToView.initTimeArray();
             var bookingContainers = await _context.BookingContainers.ToListAsync();
+            returnToView.Rooms = await _context.Rooms.ToListAsync();
             foreach(var booking in bookingContainers)
             {
                 var result = (from a in _context.BookingContainers
@@ -80,9 +84,46 @@ namespace SpartanRooms10_31_19.Controllers
                 //var roomID = _context.BookingContainers.Include(i => i.RoomID).Where(r => r.ID == booking.ID);
                 //booking.Room.ID= _context.BookingContainers.Find()
             }
+
+
             returnToView.BookingContainerList.Sort((x, y) => DateTime.Compare(x.DateTime, y.DateTime));
+
+            var copyOfReturnToView = returnToView;
+            copyOfReturnToView.BookingContainerList.Sort((x, y) => string.CompareOrdinal(x.Room.RoomName, y.Room.RoomName));
+
+            //string current="init";
+            //string previous="init";
+            //int count = 0;
+            int[] countArray = new int[copyOfReturnToView.Rooms.Count];
+            int countArrayIndex = 0;
+            foreach(var item in returnToView.BookingContainerList)
+            {
+                countArrayIndex = 0;
+                foreach (var room in copyOfReturnToView.Rooms)
+                {
+                    if (item.Room.ID == room.ID)
+                    {
+                        //copyOfReturnToView.BookingContainerList.Remove(item);
+                        countArray[countArrayIndex]++;
+
+                    }
+                    countArrayIndex++;
+                }
+
+            }
+
+            countArrayIndex = 0;
+
+            foreach (var room in returnToView.Rooms)
+            {
+                returnToView.countOfRooms.Add(room.ID, countArray[countArrayIndex]);
+                countArrayIndex++;
+            }
             var dummy = 1;
+            returnToView.alreadyRenderedRooms = new string[bookingContainers.Count];
+            returnToView.alreadyCompletedRender = new List<string>();
             return View(returnToView);
+
         }
 
         // GET: BookingContainer/Details/5
