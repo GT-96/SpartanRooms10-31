@@ -14,198 +14,265 @@
     Dictionary<int, string[]> tdRenderBookingID = new Dictionary<int, string[]>();
     int dictionaryCounter = 0;
 }
+<style>
+    .parent{
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    padding: 10px;
+    }
+    .childLeft{
+    width: 15%;
+    height: 100%;
+    float: left;
+    font-size:200%;
+    overflow-y:auto;
+
+    }
+    .childRight{
+    width:95%;
+    margin-left: 15%;
+    height: 100%;
+    overflow-x:auto;
+
+    }
+
+</style>
+
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
 
-        <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.BookingContainer.DateTime)
-                </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.BookingContainer.Room.RoomName)
-            </th>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.BookingContainer.isFull)
-                </th>*@
-            <th></th>
-            <th></th>
-            @foreach (var item in Model.timeArray)
-            {
-                <th id="@headerID">
-                    @item.ToString("hh:mm tt")
-                </th>
-                headerID++;
-            }
+<div name="containerDiv" class="parent">
+    <div name="roomDisplay" class="childLeft">
+        <table class="table ">
+            <thead>
 
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BookingContainer.Room.RoomName)
+                    </th>
 
-        </tr>
-    </thead>
-    <tbody>
+                    <th></th>
+                    
+                    <th></th>
+                </tr>
+            </thead>
 
-        @foreach (var count in Model.countOfRooms)
-        {
-            tdRenderBookingID.Clear();
-
-            @for (int i = 0; i < tdRender.Length; i++)
-            {
-                tdRender[i] = "null";
-            }
-
-            int countTracker = 0;
-            @for (int i = 0; i < Model.BookingContainerList.Count; i++)
-            {
-                if (Model.BookingContainerList[i].RoomID == count.Key)
-                {
-                    int hourTracker = 0;
-
-                    foreach (var hour in Model.timeArray)
-                    {
-                        if (hour.Hour == Model.BookingContainerList[i].DateTime.Hour)
-                        {
-                            tdRender[hourTracker] = "FREE";
-                            BookingIDandContainer.Add(Model.BookingContainerList[i].ID, Model.BookingContainerList[i]);
-                        }
-                        hourTracker++;
-                    }
-                    tdRenderBookingID.Add(Model.BookingContainerList[i].ID, tdRender);
-                }
-
-            }
-
-        <tr>
-
-            @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>*@
-            @{var room = Model.BookingContainerList.Where(i => i.RoomID == count.Key);
-                var roomName = Model.Rooms.First(r => r.ID == count.Key);
-                //var booking = room.Where(r=>)
-            }
-            <td>@Html.DisplayFor(m => roomName.RoomName)</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="">Edit</a> |
-                <a asp-action="Details" asp-route-id="">Details</a> |
-                <a asp-action="Delete" asp-route-id="">Delete</a>
-
-                @*@if (!room.isFull)
-            {
-                <a asp-action="CreateReservation" asp-route-id="">Create New Reservation</a>
-            }*@
-            </td>
-
-            @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>*@
-            <td></td>
-
-            @*@for (int i = 0; i < tdRender.Length; i++)
-        {
-            tdRender[i].ToLower();
-            if (tdRender[i].Contains("null".ToLower()))
-            {
-                tdRender[i] = "NOT AVAILABLE";
-            }
-        }*@
-            @{ int sCount = 0;
-                int tdRenderKeysCount = 0;
-            }
-            @foreach (var s in tdRender)
-            {
-                bool isFull = false;
-                if (sCount < tdRenderBookingID.Keys.Count)
-                {
-                    var container = Model.BookingContainerList.First(f => f.ID == tdRenderBookingID.Keys.ElementAt(sCount));
-                    var tdID = container.ID;
-                    var tdRenderKeys = tdRenderBookingID.Keys;
-                    var tdRenderValues = tdRenderBookingID.Values;
-
-                    var asdasf = Model.BookingContainerList.First(f => f.ID == tdRenderKeys.ElementAt(sCount));
-
-                    isFull = container.isFull;
-
-                    if (s.Contains("FREE") && isFull)
-                    {
-                        <td id="@tdID" class="bg-danger" style="font-size:200%">
-                            &#10060
-
-                        </td>
-                        sCount++;
-
-                    }
-                    else if (s.Contains("FREE") && !isFull)
-                    {
-                        <td id="@tdID"class="bg-success" style="font-size:200%">
-                            <a asp-action="CreateReservation" asp-route-id="@tdID">Reserve!</a>
-
-                        </td>
-                        sCount++;
-                    }
-                    else
-                    {
-                        <td id="@tdID" class="bg-secondary" style="font-size:200%">
-
-                            &#9676
-                        </td>
-                        //sCount++;
-
-                    }
-                }
-                else
-                {
-                    <td class="bg-secondary" style="font-size:200%">
-
-                        &#9676
-                    </td>
-                    //sCount++;
-
-                }
-
-            }
-            @{ tdRenderKeysCount++;
-            }
-        </tr>
-
-
-            //dictionaryCounter++;
-        }
-
-
-        @*@foreach (var count in Model.countOfRooms)
+            @foreach (var count in Model.countOfRooms)
             {
                 <tr>
 
-                    @{int index = 0;
+                    @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>*@
+                    @{var room = Model.BookingContainerList.Where(i => i.RoomID == count.Key);
+                        var roomName = Model.Rooms.First(r => r.ID == count.Key);
+                        //var booking = room.Where(r=>)
                     }
-                    <td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>
-                    <td>@Html.DisplayFor(m => Model.BookingContainerList[index].Room.RoomName)</td>
+                    <td>@Html.DisplayFor(m => roomName.RoomName)</td>
+                </tr>
+            }
 
-                    <td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>
-                    <td></td>
-                    <td></td>
+        </table>
+</div>
+
+
+
+    <div name="roomDisplay" class="childRight">
+        <table class="table ">
+            <thead>
+
+                <tr>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.BookingContainer.DateTime)
+                    </th>*@
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.BookingContainer.Room.RoomName)
+                    </th>*@
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.BookingContainer.isFull)
+                    </th>*@
+                    <th></th>
+                    @foreach (var item in Model.timeArray)
+                    {
+                        <th id="@headerID">
+                            @item.ToString("hh:mm tt")
+                        </th>
+                        headerID++;
+                    }
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var count in Model.countOfRooms)
+                {
+                    tdRenderBookingID.Clear();
 
                     @for (int i = 0; i < tdRender.Length; i++)
                     {
-                        tdRender[i].ToLower();
-                        if (tdRender[i].Contains("null".ToLower()))
-                        {
-                            tdRender[i] = "NOT AVAILABLE";
-                        }
+                        tdRender[i] = "null";
                     }
-                    @foreach (var s in tdRender)
+
+                    int countTracker = 0;
+                    @for (int i = 0; i < Model.BookingContainerList.Count; i++)
                     {
+                        if (Model.BookingContainerList[i].RoomID == count.Key)
+                        {
+                            int hourTracker = 0;
+
+                            foreach (var hour in Model.timeArray)
+                            {
+                                if (hour.Hour == Model.BookingContainerList[i].DateTime.Hour)
+                                {
+                                    tdRender[hourTracker] = "FREE";
+                                    BookingIDandContainer.Add(Model.BookingContainerList[i].ID, Model.BookingContainerList[i]);
+                                }
+                                hourTracker++;
+                            }
+                            tdRenderBookingID.Add(Model.BookingContainerList[i].ID, tdRender);
+                        }
+
+                    }
+
+                    <tr>
+
+                        @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>*@
+                        @{var room = Model.BookingContainerList.Where(i => i.RoomID == count.Key);
+                            var roomName = Model.Rooms.First(r => r.ID == count.Key);
+                            //var booking = room.Where(r=>)
+                        }
+
+@*
+                        <td>@Html.DisplayFor(m => roomName.RoomName)</td>
                         <td>
-                            @s
+                            <a asp-action="Edit" asp-route-id="">Edit</a> |
+                            <a asp-action="Details" asp-route-id="">Details</a> |
+                            <a asp-action="Delete" asp-route-id="">Delete</a>
 
+                            if (!room.isFull)
+                            {
+                                <a asp-action="CreateReservation" asp-route-id="">Create New Reservation</a>
+                            }
                         </td>
-                    }
-                    @{index++;
-                    }
-                </tr>
-            }*@
+*@
 
-    </tbody>
-</table>
+                        @*<td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>*@
+                        <td></td>
+
+                        @*@for (int i = 0; i < tdRender.Length; i++)
+                        {
+                            tdRender[i].ToLower();
+                            if (tdRender[i].Contains("null".ToLower()))
+                            {
+                                tdRender[i] = "NOT AVAILABLE";
+                            }
+                        }*@
+                        @{ int sCount = 0;
+                            int tdRenderKeysCount = 0;
+                        }
+                        @foreach (var s in tdRender)
+                        {
+                            bool isFull = false;
+                            if (sCount < tdRenderBookingID.Keys.Count)
+                            {
+                                var container = Model.BookingContainerList.First(f => f.ID == tdRenderBookingID.Keys.ElementAt(sCount));
+                                var tdID = container.ID;
+                                var tdRenderKeys = tdRenderBookingID.Keys;
+                                var tdRenderValues = tdRenderBookingID.Values;
+
+                                var asdasf = Model.BookingContainerList.First(f => f.ID == tdRenderKeys.ElementAt(sCount));
+
+                                isFull = container.isFull;
+
+                                if (s.Contains("FREE") && isFull)
+                                {
+                                    <td id="@tdID" class="bg-danger" style="font-size:200%">
+                                        &#10060
+
+                                    </td>
+                                    sCount++;
+
+                                }
+                                else if (s.Contains("FREE") && !isFull)
+                                {
+                                    <td id="@tdID" class="bg-success" style="font-size:200%">
+                                        <a asp-action="CreateReservation" asp-route-id="@tdID">Reserve!</a>
+
+                                    </td>
+                                    sCount++;
+                                }
+                                else
+                                {
+                                    <td id="@tdID" class="bg-secondary" style="font-size:200%">
+
+                                        &#9676
+                                    </td>
+                                    //sCount++;
+
+                                }
+                            }
+                            else
+                            {
+                                <td class="bg-secondary" style="font-size:200%">
+
+                                    &#9676
+                                </td>
+                                //sCount++;
+
+                            }
+
+                        }
+                        @{ tdRenderKeysCount++;
+                        }
+                    </tr>
+
+
+                    //dictionaryCounter++;
+                }
+
+
+                @*@foreach (var count in Model.countOfRooms)
+                {
+                    <tr>
+
+                        @{int index = 0;
+                        }
+                        <td>@Html.DisplayFor(m => Model.BookingContainerList[index].DateTime)</td>
+                        <td>@Html.DisplayFor(m => Model.BookingContainerList[index].Room.RoomName)</td>
+
+                        <td>@Html.DisplayFor(m => Model.BookingContainerList[index].isFull)</td>
+                        <td></td>
+                        <td></td>
+
+                        @for (int i = 0; i < tdRender.Length; i++)
+                        {
+                            tdRender[i].ToLower();
+                            if (tdRender[i].Contains("null".ToLower()))
+                            {
+                                tdRender[i] = "NOT AVAILABLE";
+                            }
+                        }
+                        @foreach (var s in tdRender)
+                        {
+                            <td>
+                                @s
+
+                            </td>
+                        }
+                        @{index++;
+                        }
+                    </tr>
+                }*@
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
 
 
 

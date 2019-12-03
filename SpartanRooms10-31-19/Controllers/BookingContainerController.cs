@@ -89,7 +89,7 @@ namespace SpartanRooms10_31_19.Controllers
             returnToView.BookingContainerList.Sort((x, y) => DateTime.Compare(x.DateTime, y.DateTime));
 
             var copyOfReturnToView = returnToView;
-            copyOfReturnToView.BookingContainerList.Sort((x, y) => string.CompareOrdinal(x.Room.RoomName, y.Room.RoomName));
+            copyOfReturnToView.BookingContainerList.Sort((x, y) => string.Compare(x.Room.RoomName.ToLower(), y.Room.RoomName.ToLower()));
 
             //string current="init";
             //string previous="init";
@@ -119,6 +119,7 @@ namespace SpartanRooms10_31_19.Controllers
                 returnToView.countOfRooms.Add(room.ID, countArray[countArrayIndex]);
                 countArrayIndex++;
             }
+            
             var dummy = 1;
             returnToView.alreadyRenderedRooms = new string[bookingContainers.Count];
             returnToView.alreadyCompletedRender = new List<string>();

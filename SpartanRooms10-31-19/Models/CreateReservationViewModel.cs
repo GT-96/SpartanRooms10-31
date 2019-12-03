@@ -17,6 +17,8 @@ namespace SpartanRooms10_31_19.Models
         //BookingContainer ID
         public int ID { get; set; }
 
+        public int RoomID { get; set; }
+
         public Reservation Reservation { get; set; }
 
         //public Room? Room { get; set; }
