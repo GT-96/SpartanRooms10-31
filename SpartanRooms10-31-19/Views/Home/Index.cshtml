@@ -52,12 +52,16 @@
                     </div>
 
                     <!-- Sign in button -->
-                    <button class="btn btn-info btn-block my-4" style="border-radius:50px" type="submit">Log in</button>
+                    <button class="btn btn-info btn-block my-4" asp-area="" asp-controller="BookingContainer" asp-action="Index" style="border-radius:50px" type="submit">
+                        @*<a class="nav-link text-dark" asp-area="" asp-controller="BookingContainer" asp-action="Index"></a>*@
+                        Log in
+                    </button>
 
                     <!-- Register -->
                     <p>
                         Not a member?
-                        <a href="">Register</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="BookingContainer" asp-action="Index">Register!</a>
+
                     </p>
                 </form>
             </div>
