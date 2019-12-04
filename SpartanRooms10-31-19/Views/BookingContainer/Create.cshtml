@@ -22,7 +22,7 @@
     </script>*@
 
 
-<h1>Create</h1>
+
 
 @*<div class="well">
         <div id="datetimepicker2" class="input-append">
@@ -42,60 +42,63 @@
             });
         });
     </script>*@
+<div class="container-fluid fitTo100" style="position: absolute ; height: 100% ; background-color: #f3cb7a">
+    <div class="flex-md-grow-0 container-fluid fitTo100">
+        <h1>Create</h1>
+        <h4>BookingContainer</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
 
-<h4>BookingContainer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+                        <div class="well">
+                            <div id="datetimepicker2" class="input-append">
+                                <input style="background-color: white; border-radius: 10px" type="datetime-local" asp-for="BookingContainer.DateTime" >
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                                    </i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group"  >
+                            <select asp-for="PostedIDs" asp-items="Model.RoomIDs" class="form-control" style="background-color: white; border-radius: 10px">
+                            </select>
+                        </div>
 
-                <div class="well">
-                    <div id="datetimepicker2" class="input-append">
-                        <input type="datetime-local" asp-for="BookingContainer.DateTime">
-                        <span class="add-on">
-                            <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                            </i>
-                        </span>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <select asp-for="PostedIDs" asp-items="Model.RoomIDs" class="form-control">
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
+                </form>
             </div>
-        </form>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
     </div>
-</div>
+    </div>
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-@*@{int i = 0; }*@
+        @*@{int i = 0; }*@
 
 
-@*@foreach (var room in Model.Rooms)
-    {
-        <option value="@room.ID">@room.RoomName, @room.Type, @room.ID</option>
-        i++;
-    }*@
+        @*@foreach (var room in Model.Rooms)
+            {
+                <option value="@room.ID">@room.RoomName, @room.Type, @room.ID</option>
+                i++;
+            }*@
 
-@*<label asp-for="DateTime" class="control-label"></label>
-    <input asp-for="DateTime" class="form-control" />
-    <span asp-validation-for="DateTime" class="text-danger"></span>*@
+        @*<label asp-for="DateTime" class="control-label"></label>
+            <input asp-for="DateTime" class="form-control" />
+            <span asp-validation-for="DateTime" class="text-danger"></span>*@
 
-@*<div class="form-group form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" asp-for="isFull" /> @Html.DisplayNameFor(model => model.isFull)
-        </label>
-    </div>*@
+        @*<div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isFull" /> @Html.DisplayNameFor(model => model.isFull)
+                </label>
+            </div>*@
