@@ -58,7 +58,7 @@ namespace SpartanRooms10_31_19.Controllers
                     type = RoomType.Event;
                 }
                 r.Type = type;
-                r.Capacity = 5;
+                r.Capacity = 2;
                 _context.Add(r);
             }
             _context.SaveChanges();
